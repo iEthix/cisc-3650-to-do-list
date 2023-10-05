@@ -3,29 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel = "stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
 <main class="app">
     <h1>To Do List</h1>
-    <div class="date-container">
-        <h1><span id="date"></span></h1>
-        <form id="task-form">
-            <div class="to-do-task">
-            <input type="text" id="task" placeholder="Enter a task">
-        </div>
-            <div class="to-do-date">
-                <input type="date" id="taskdate" placeholder="Enter a due date">
-            </div>
-                <button type="submit" id="submitButton">Submit</button>
-            </div>
-    </form>
+    <h2 id="date"></h2>
+    <button id="newTaskButton">New Task</button>
+    <div class="tabs">
+        <div class="tab active" id="tasksTab">Current Tasks</div>
+        <div class="tab" id="completedTab">Completed Tasks</div>
+    </div>
+    <div class="action-buttons">
+        <button id="editSelected">Edit Selected</button>
+        <button id="deleteSelected">Delete Selected</button>
+        <button id="markAsCompleted">Mark as Completed</button>
+    </div>
     <div class="task-list"></div>
 </main>
 
+<div id="taskModal" class="modal">
+    <div class="modal-content">
+        <h3>Create New Task</h3>
+        <label for="taskTitle"></label>
+        <input type="text" id="taskTitle" placeholder="Enter your task title">
+        
+        <input type="date" id="dueDate">
+        <span id="dueDateLabel">(no due date)</span>
+
+        <div id ="colorChoices" class="colorOptions">
+            <label for="taskTitle">Urgency</label>
+            <button class="colorBtn none" data-color="none">None</button>
+            <button class="colorBtn red" data-color="red">Red</button>
+            <button class="colorBtn yellow" data-color="yellow">Yellow</button>
+            <button class="colorBtn green" data-color="green">Green</button>
+        </div>
+
+        <div class="modal-footer">
+            <button id="cancelTask">Cancel</button>
+            <button id="submitTask">New Task</button>
+        </div>
+    </div>
+</div>
+
 <script src="script.js"></script>
-
-
 </body>
 </html>

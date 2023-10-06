@@ -6,7 +6,6 @@ body {
     padding: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
     align-items: flex-start;
     padding-top: 20px;
     height: 100vh;
@@ -182,20 +181,6 @@ button:last-child {
     background-color: #da190b;
 }
 
-#task-form {
-    max-width: 600px;
-    width: 100%;
-    margin: 20px auto;
-}
-
-#task, #taskdate {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #d1d1d1;
-}
-
 .modal {
     display: none;
     position: fixed;
@@ -286,4 +271,8 @@ button:last-child {
 .tab.active {
     background-color: #007BFF;
     color: white;
+}
+
+#revertSelected {
+    display: none;
 }

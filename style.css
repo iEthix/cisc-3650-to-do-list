@@ -158,6 +158,10 @@ button:last-child {
     width: 100%;
 }
 
+.completed-task {
+    text-decoration: line-through;
+}
+
 #newTaskButton {
     margin-top: 10px; 
     margin-bottom: 20px; 

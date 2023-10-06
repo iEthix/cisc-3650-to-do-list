@@ -163,7 +163,7 @@ function displayCompletedTasks() {
         <div class="item">
             <input type="checkbox" class="taskCheckbox">
             <div class="task-detail">
-                <textarea disabled>${completedTasksArray[i].task}</textarea>
+                <textarea disabled class="completed-task">${completedTasksArray[i].task}</textarea>
             </div>
             <div class="update-controller">
                 <button class="editBtn">Edit</button>

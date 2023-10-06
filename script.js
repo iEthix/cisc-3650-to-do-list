@@ -346,7 +346,7 @@ document.querySelector('#editSelected').addEventListener('click', () => {
 });
 
 submitTaskButton.addEventListener('click', () => {
-    const taskName = taskTitleInput.value;
+    const taskName = taskTitleInput.value.trim();
     const taskDate = dueDateInput.value;
 
     if (editMode) {
@@ -360,6 +360,8 @@ submitTaskButton.addEventListener('click', () => {
         createTask(taskName, taskDate, selectedColor);
         displayTasks();
         taskModal.style.display = 'none';
+    } else {
+        alert("Task cannot be empty!")
     }
 });
 

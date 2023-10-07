@@ -19,7 +19,7 @@ function displayDate() {
     document.querySelector("#date").innerHTML = formattedDate;
 }
 
-function fireConfetti() {
+function activateConfetti() {
     confetti({
         particleCount: 100,   
         spread: 70,           
@@ -145,7 +145,7 @@ function createTask(item, date, urgency) {
     displayTasks();
 }
 
-function updateItem(text, date, i) {
+function updateTask(text, date, i) {
     itemsArray[i] = { task: text, date: date };
     localStorage.setItem("task", JSON.stringify(itemsArray));
     displayTasks();
@@ -229,7 +229,7 @@ function markTasksAsCompleted() {
     displayTasks();
 
     if(taskCompletedFlag) {
-        fireConfetti();
+        activateConfetti();
     }
 }
 
@@ -266,7 +266,7 @@ function activateSaveListeners() {
     saveBtn.forEach((sb, i) => {
         sb.addEventListener("click", () => {
             const taskText = textareas[i].value.split(" (")[0];
-            updateItem(taskText, dateInputs[i].value, i);
+            updateTask(taskText, dateInputs[i].value, i);
         });
     });
 }

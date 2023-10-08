@@ -1,6 +1,14 @@
-//Retrieve tasks from local storage or initialize with empty arrays
-const itemsArray = localStorage.getItem("task") ? JSON.parse(localStorage.getItem("task")) : [] 
-const completedTasksArray = localStorage.getItem("completedTask") ? JSON.parse(localStorage.getItem("completedTask")) : []
+//Retrieve tasks from local storage or initialize with initial tasks
+const itemsArray = localStorage.getItem("task") ? JSON.parse(localStorage.getItem("task")) : getInitialTasks(); 
+const completedTasksArray = localStorage.getItem("completedTask") ? JSON.parse(localStorage.getItem("completedTask")) : getInitialCompletedTasks();
+
+//Set the local storage only if it was empty
+if (!localStorage.getItem("task")) {
+    localStorage.setItem("task", JSON.stringify(itemsArray));
+}
+if (!localStorage.getItem("completedTask")) {
+    localStorage.setItem("completedTask", JSON.stringify(completedTasksArray));
+}
 
 //Variables for edit mode and modal management
 let editMode = false;
@@ -407,16 +415,7 @@ dueDateLabel.addEventListener('click', () => {
     }
 });
 
- window.onload = function() {
-    // Check and set the initial tasks
-    if (!localStorage.getItem("task")) {
-        localStorage.setItem("task", JSON.stringify(getInitialTasks()));
-    }
-
-    if (!localStorage.getItem("completedTask")) {
-        localStorage.setItem("completedTask", JSON.stringify(getInitialCompletedTasks()));
-    }
-
+window.onload = function() {
     displayDate();
     displayTasks();
 }

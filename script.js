@@ -69,7 +69,7 @@ function getInitialTasks() {
             urgency: "yellow"
         },
         {
-            task: "You can delete your current tasks and complete tasks! You can delete multiple tasks at a time!",
+            task: "You can delete your current tasks and completed tasks! You can delete multiple tasks at a time!",
             date: new Date().toISOString().slice(0, 10),
             urgency: "red"
         },

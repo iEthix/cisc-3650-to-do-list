@@ -407,7 +407,9 @@ dueDateLabel.addEventListener('click', () => {
     }
 });
 
- if (!localStorage.getItem("task")) {
+ window.onload = function() {
+    // Check and set the initial tasks
+    if (!localStorage.getItem("task")) {
         localStorage.setItem("task", JSON.stringify(getInitialTasks()));
     }
 
@@ -415,8 +417,6 @@ dueDateLabel.addEventListener('click', () => {
         localStorage.setItem("completedTask", JSON.stringify(getInitialCompletedTasks()));
     }
 
-//When the page is loaded, set up the initial state
-window.onload = function() {
     displayDate();
     displayTasks();
 }

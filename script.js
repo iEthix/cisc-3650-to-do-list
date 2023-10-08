@@ -1,6 +1,8 @@
-const itemsArray = localStorage.getItem("task") ? JSON.parse(localStorage.getItem("task")) : []
+//Retrieve tasks from local storage or initialize with empty arrays
+const itemsArray = localStorage.getItem("task") ? JSON.parse(localStorage.getItem("task")) : [] 
 const completedTasksArray = localStorage.getItem("completedTask") ? JSON.parse(localStorage.getItem("completedTask")) : []
 
+//Variables for edit mode and modal management
 let editMode = false;
 let editIndex = -1;
 const taskModal = document.getElementById('taskModal');
@@ -12,13 +14,14 @@ const colorButtons = document.querySelectorAll('.colorBtn');
 const dueDateLabel = document.getElementById('dueDateLabel');
 const modalTitle = document.querySelector('#taskModal h3');
 
+//Display the current date
 function displayDate() {
     let date = new Date();
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = date.toLocaleDateString(undefined, options);
     document.querySelector("#date").innerHTML = formattedDate;
 }
-
+//Activates a confetti animation for visual feedback
 function activateConfetti() {
     confetti({
         particleCount: 100,   
@@ -26,7 +29,7 @@ function activateConfetti() {
         origin: { y: 0.6 }    
     });
 }
-
+//Resets the modal to its default state
 function resetModal() {
     modalTitle.innerText = "Create New Task";
     taskTitleInput.value = '';
@@ -39,7 +42,7 @@ function resetModal() {
     editMode = false;
     editIndex = -1;
 }
-
+//Provide initial tasks for first-time users
 function getInitialTasks() {
     return [
         {
@@ -69,7 +72,7 @@ function getInitialTasks() {
         }
     ];
 }
-
+//Provide initial completed tasks for first-time users
 function getInitialCompletedTasks() {
     return [
         {
@@ -79,7 +82,7 @@ function getInitialCompletedTasks() {
         }
     ];
 }
-
+//Display tasks in the UI
 function displayTasks() {
     let items = "";
     for (let i = 0; i < itemsArray.length; i++) {
@@ -110,7 +113,7 @@ function displayTasks() {
     activateSaveListeners();
     activateCancelListeners();
 }
-
+//Display completed tasks in the UI
 function displayCompletedTasks() {
     let items = "";
     for (let i = 0; i < completedTasksArray.length; i++) {
@@ -138,25 +141,25 @@ function displayCompletedTasks() {
         }
     }
 }
-
+//Add a new task to the tasks list
 function createTask(item, date, urgency) {
     itemsArray.push({task: item, date: date, urgency: urgency});
     localStorage.setItem('task', JSON.stringify(itemsArray));
     displayTasks();
 }
-
+//Modify an existing task
 function updateTask(text, date, i) {
     itemsArray[i] = { task: text, date: date };
     localStorage.setItem("task", JSON.stringify(itemsArray));
     displayTasks();
 }
-
+//Delete a task based on its index
 function deleteTask(i) {
     itemsArray.splice(i,1)
     localStorage.setItem("task", JSON.stringify(itemsArray))
     displayTasks();
 }
-
+//Open the modal to edit a task
 function handleEdit(i) {
     if (document.querySelector('#completedTab').classList.contains('active')) {
         return;
@@ -180,7 +183,7 @@ function handleEdit(i) {
     submitTaskButton.textContent = "Update Task";
     taskModal.style.display = 'block';
 }
-
+//Delete all selected tasks from the tasks list
 function deleteSelectedTasks() {
     const checkboxes = document.querySelectorAll('.taskCheckbox');
     let currentArray;
@@ -208,7 +211,7 @@ function deleteSelectedTasks() {
         displayCompletedTasks();
     }
 }
-
+//Move selected tasks to the completed tasks list
 function markTasksAsCompleted() {
     const checkboxes = document.querySelectorAll('.taskCheckbox');
     let taskCompletedFlag = false;
@@ -232,7 +235,7 @@ function markTasksAsCompleted() {
         activateConfetti();
     }
 }
-
+//Revert completed tasks back to the tasks list
 function revertCompletedTasks() {
     const checkboxes = document.querySelectorAll('.taskCheckbox');
     for(let i = checkboxes.length - 1; i >= 0; i--) {
@@ -247,7 +250,7 @@ function revertCompletedTasks() {
 
     displayCompletedTasks();
 }
-
+//Add event listeners to all edit buttons
 function activateEditListeners() {
     const editBtns = document.querySelectorAll('.editBtn');
     editBtns.forEach((btn, index) => {
@@ -257,7 +260,7 @@ function activateEditListeners() {
         });
     });
 }
-
+//Add event listeners to all save buttons
 function activateSaveListeners() {
     const saveBtn = document.querySelectorAll(".saveBtn");
     const textareas = document.querySelectorAll(".input-controller textarea");
@@ -270,7 +273,7 @@ function activateSaveListeners() {
         });
     });
 }
-
+//Add event listeners to all cancel buttons
 function activateCancelListeners() {
     const cancelBtn = document.querySelectorAll(".cancelBtn");
     const updateController = document.querySelectorAll(".update-controller");
@@ -287,30 +290,30 @@ function activateCancelListeners() {
         });
     });
 }
-
+//Event listeners for creating a new task
 document.querySelector('#newTaskButton').addEventListener('click', () => {
     resetModal();
     taskModal.style.display = 'block';
 });
-
+//Event listener to hide the task modal when the cancel button is clicked
 cancelTaskButton.addEventListener('click', () => {
     taskModal.style.display = 'none';
 });
-
+//Event listener for when the tasks tab is clicked to display current tasks
 document.querySelector('#tasksTab').addEventListener('click', () => {
     displayTasks();
     document.querySelector('#tasksTab').classList.add('active');
     document.querySelector('#completedTab').classList.remove('active');
     document.querySelector('#revertSelected').style.display = 'none';
 });
-
+//Event listener for when the completed tasks tab is clicked to display completed tasks
 document.querySelector('#completedTab').addEventListener('click', () => {
     displayCompletedTasks();
     document.querySelector('#completedTab').classList.add('active');
     document.querySelector('#tasksTab').classList.remove('active');
     document.querySelector('#revertSelected').style.display = 'inline-block';
 });
-
+//Handle color selection for tasks
 let selectedColor = 'none';
 colorButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -324,7 +327,7 @@ colorButtons.forEach(btn => {
         });
     });
 });
-
+//Edit selected task, this ensures only one task is selected for editing
 document.querySelector('#editSelected').addEventListener('click', () => {
     const checkboxes = document.querySelectorAll('.taskCheckbox');
     let selectedTasks = 0;
@@ -344,12 +347,13 @@ document.querySelector('#editSelected').addEventListener('click', () => {
         handleEdit(selectedIndex);
     }
 });
-
+//Handle task submission for a new task or an edited task
 submitTaskButton.addEventListener('click', () => {
     const taskName = taskTitleInput.value.trim();
     const taskDate = dueDateInput.value;
 
     if (editMode) {
+        //Handle task editing
         itemsArray[editIndex] = { task: taskName, date: taskDate, urgency: selectedColor };
         localStorage.setItem('task', JSON.stringify(itemsArray));
         displayTasks();
@@ -357,6 +361,7 @@ submitTaskButton.addEventListener('click', () => {
         editIndex = -1;
         taskModal.style.display = 'none';
     } else if (taskName) {
+        //Handle new task creation
         createTask(taskName, taskDate, selectedColor);
         displayTasks();
         taskModal.style.display = 'none';
@@ -364,32 +369,35 @@ submitTaskButton.addEventListener('click', () => {
         alert("Task cannot be empty!")
     }
 });
-
+//Reset task modal to default state when the cancel button is clicked
 cancelTaskButton.addEventListener('click', () => {
     taskModal.style.display = 'none';
     editMode = false;
     editIndex = -1;
     submitTaskButton.textContent = "New Task";
 });
-
+//Delete selected tasks from the tasks list
 document.querySelector('#deleteSelected').addEventListener('click', deleteSelectedTasks);
-
+//Mark selected tasks as completed
 document.querySelector('#markAsCompleted').addEventListener('click', markTasksAsCompleted);
-
+//Revert selected completed tasks back to current tasks
 document.querySelector('#revertSelected').addEventListener('click', revertCompletedTasks);
 
+//Event listener to update the label based on the input of the due date
 dueDateInput.addEventListener('input', () => {
     if (dueDateInput.value) {
+        //If a due date is entered, provide an option to clear it
         dueDateLabel.textContent = 'Clear';
         dueDateLabel.style.color = 'blue';
         dueDateLabel.style.cursor = 'pointer';
     } else {
+         //If no date is selected, show that there is no due date
         dueDateLabel.textContent = '(no due date)';
         dueDateLabel.style.color = 'initial';
         dueDateLabel.style.cursor = 'default';
     }
 });
-
+//Event listener for the due date label, allowing users to clear the selected date
 dueDateLabel.addEventListener('click', () => {
     if (dueDateInput.value) {
         dueDateInput.value = '';
@@ -399,6 +407,7 @@ dueDateLabel.addEventListener('click', () => {
     }
 });
 
+//When the page is loaded, set up the initial state
 window.onload = function() {
     displayDate();
 

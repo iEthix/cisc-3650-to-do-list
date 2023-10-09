@@ -34,7 +34,7 @@ function activateConfetti() {
     confetti({
         particleCount: 100,   
         spread: 70,           
-        origin: { y: 0.6 }    
+        origin: { x: 0.45, y: 0.5 }    
     });
 }
 //Resets the modal to its default state

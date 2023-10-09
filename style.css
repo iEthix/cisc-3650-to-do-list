@@ -99,6 +99,8 @@ label[for="taskTitle"] {
 .taskCheckbox {
     margin-right: 10px;
     flex: 0 0 auto;
+    transform: scale(1.2);
+    margin-bottom: 5px;
 }
 
 .task-detail {

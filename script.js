@@ -105,7 +105,7 @@ function displayTasks() {
                 <button class="saveBtn">Save</button>
                 <button class="cancelBtn">Cancel</button>
             </div>
-            <div class="task-date-bubble">
+            <div class="task-date-label">
                 <span class="task-date">${itemsArray[i].date}</span>
             </div>
         </div>`;

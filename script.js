@@ -1,116 +1,118 @@
-document.getElementById('searchBtn').addEventListener('click', function() {
-  var searchInput = document.getElementById('searchInput');
-  var searchContainer = document.querySelector('.search-container');
-  searchContainer.style.flexBasis = '600px'; // Expand to the designated space
-  searchInput.style.borderColor = "#000000";
-  searchInput.style.opacity = '1';
-  searchInput.style.visibility = 'visible';
-  searchInput.focus();
-});
+const itemsArray = localStorage.getItem("task") ? JSON.parse(localStorage.getItem("task")) : []
 
-document.getElementById('searchInput').addEventListener('blur', function(event) {
-  var searchContainer = document.querySelector('.search-container');
-  if (!event.target.value) {
-      searchContainer.style.flexBasis = '250px'; // Shrink back to the default size
-      event.target.style.opacity = '0';
-      event.target.style.visibility = 'hidden';
-  }
-});
+console.log(itemsArray)
 
-// Handle login button selection
-$(document).ready(function() {
-    // Event listener for login button to open the modal
-    $('loginButton').click(function() {
-      $('#loginModal').modal('show');
-    });
-  
-    // Event listener for form submission
-    $('#loginForm').submit(function(event) {
-      event.preventDefault();
-      // Logic to handle the login, potentially making an AJAX call to your server
-    });
-  
-    // Additional event listeners for social login buttons
-  });
-
-  document.getElementById('signupForm').addEventListener('submit', function(event) {
+document.querySelector('#task-form').addEventListener("submit",() => {
     event.preventDefault();
-    // Implement your sign up logic here
-    // Typically involves an AJAX call to the server
-  });
+    const item = document.querySelector('#task')
+    const date = document.querySelector('#taskdate')
+    createTask(item, date)
+    displayTasks();
+})
 
-  $(document).ready(function() {
-    // Event listener for login button to open the modal
-    $('forgotUsernameAnchor').click(function() {
-      $('#forgotUsernameModal').modal('show');
-    });
-  
-    // Event listener for form submission
-    $('#forgotUsernameModal').submit(function(event) {
-      event.preventDefault();
-      // Logic to handle the login, potentially making an AJAX call to your server
-    });
-  
-    // Additional event listeners for social login buttons
-  });
+function displayTasks() {
+    let items = "";
+    for(let i = 0; i < itemsArray.length; i++) {
+        items += `
+        <div class="item">
+            <div class="input-controller">
+                <textarea disabled>${itemsArray[i].task} (${itemsArray[i].date})</textarea> <!-- Display task and date here -->
+                <input type="date" value="${itemsArray[i].date}" style="display: none;">
+                <div class="edit-controller">
+                    <button class="editBtn">Edit</button>
+                    <button class="deleteBtn">Delete</button>
+                </div>
+            </div>
+            <div class="update-controller">
+                <button class="saveBtn">Save</button>
+                <button class="cancelBtn">Cancel</button>
+            </div>
+        </div>`;
+    }
+    document.querySelector(".task-list").innerHTML = items;
+    activateDeleteListeners();
+    activateEditListeners();
+    activateSaveListeners();
+    activateCancelListeners();
+}
 
-  $(document).ready(function() {
-    // Event listener for login button to open the modal
-    $('forgotPasswordAnchor').click(function() {
-      $('#forgotPasswordModal').modal('show');
-    });
-  
-    // Event listener for form submission
-    $('#forgotPasswordModal').submit(function(event) {
-      event.preventDefault();
-      // Logic to handle the login, potentially making an AJAX call to your server
-    });
-  
-    // Additional event listeners for social login buttons
-  });
+function activateDeleteListeners() {
+    let deleteBtn = document.querySelectorAll(".deleteBtn")
+    deleteBtn.forEach((db, i) => {
+        db.addEventListener("click", () => { deleteTask(i) })
+    })
+}
 
-  $(document).ready(function() {
-    // Event listener for login button to open the modal
-    $('loginSignupButton').click(function() {
-      $('#signupModal').modal('show');
-    });
-  
-    // Event listener for form submission
-    $('#signupModal').submit(function(event) {
-      event.preventDefault();
-      // Logic to handle the login, potentially making an AJAX call to your server
-    });
-  
-    // Additional event listeners for social login buttons
-  });
+function activateEditListeners() {
+    const editBtn = document.querySelectorAll(".editBtn");
+    const updateController = document.querySelectorAll(".update-controller");
+    const textareas = document.querySelectorAll(".input-controller textarea");
+    const dateInputs = document.querySelectorAll(".input-controller input[type=date]");
 
-  // Handle the back button functionality
-  $(document).ready(function() {
-    $('.btn-back').click(function() {
-        var targetModal = $(this).data('target');
-        // Close the current modal
-        $(this).closest('.modal').modal('hide');
-        // Open the target modal
-        $(targetModal).modal('show');
+    editBtn.forEach((eb, i) => {
+        eb.addEventListener("click", () => {
+            updateController[i].style.display = "flex";
+            textareas[i].disabled = false;
+            dateInputs[i].style.display = "block";
+        });
     });
-  });
+}
 
-  // Handle when user opens forgot username modal
-  $('#forgotUsernameAnchor').click(function(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    $('#loginModal').modal('hide'); // Hide login modal so there is no overlay
-    setTimeout(function() {
-        $('#forgotUsernameModal').modal('show');
-    }, 100);
-});
+function activateSaveListeners() {
+    const saveBtn = document.querySelectorAll(".saveBtn");
+    const textareas = document.querySelectorAll(".input-controller textarea");
+    const dateInputs = document.querySelectorAll(".input-controller input[type=date]");
 
-// Same here, but for forgot password modal
-$('#forgotPasswordAnchor').click(function(event) {
-  event.preventDefault();
-  event.stopPropagation();
-  $('#loginModal').modal('hide');
-  setTimeout(function() {
-      $('#forgotPasswordModal').modal('show');
-  }, 100);
-});
+    saveBtn.forEach((sb, i) => {
+        sb.addEventListener("click", () => {
+            const taskText = textareas[i].value.split(" (")[0];
+            updateItem(taskText, dateInputs[i].value, i);
+        });
+    });
+}
+
+function activateCancelListeners() {
+    const cancelBtn = document.querySelectorAll(".cancelBtn");
+    const updateController = document.querySelectorAll(".update-controller");
+    const textareas = document.querySelectorAll(".input-controller textarea");
+    const dateInputs = document.querySelectorAll(".input-controller input[type=date]");
+
+    cancelBtn.forEach((cb, i) => {
+        cb.addEventListener("click", () => {
+            updateController[i].style.display = "none";
+            textareas[i].disabled = true;
+            textareas[i].value = `${itemsArray[i].task} (${itemsArray[i].date})`;
+            
+            dateInputs[i].style.display = "none";
+        });
+    });
+}
+
+function updateItem(text, date, i) {
+    itemsArray[i] = { task: text, date: date };
+    localStorage.setItem("task", JSON.stringify(itemsArray));
+    location.reload();
+}
+
+function deleteTask(i) {
+    itemsArray.splice(i,1)
+    localStorage.setItem("task", JSON.stringify(itemsArray))
+    location.reload()
+}
+
+function createTask(item, date) {
+    itemsArray.push({task: item.value, date: date.value});
+    localStorage.setItem('task', JSON.stringify(itemsArray));
+    console.log(itemsArray);
+}
+
+function displayDate() {
+    let date = new Date()
+    date = date.toString().split(" ")
+    document.querySelector("#date").innerHTML = date[1] + " " + date[2] + " " + date[3]
+}
+
+window.onload = function() {
+    displayDate();
+    displayTasks();
+}

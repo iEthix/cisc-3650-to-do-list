@@ -1,3 +1,187 @@
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    background-color: #f4f4f7;
+    zoom: 1.1;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 20px;
+    height: 100vh;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    width: 600px;
+}
+
+h1 {
+    text-align: center;
+    width: 100%;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+h2 {
+    text-align: center;
+    width: 100%;
+    font-size: 1.5em;
+}
+
+.task-list {
+    max-width: 600px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px 0;
+}
+
+#taskTitle {
+    width: 90%;
+    padding: 20px;
+    font-size: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #d1d1d1;
+    border-radius: 5px;
+}
+
+label[for="taskTitle"] {
+    font-weight: bold;
+}
+
+#dueDate {
+    width: 30%;
+    margin-right: 10px;
+    display: inline-block;
+    font-size: 16px;   
+    padding: 8px;     
+}
+
+.date-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+#dueDateLabel {
+    display: inline-block;
+    vertical-align: middle;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+#dueDateLabel:hover {
+    color: #333;
+}
+
+.task-date-label {
+    max-width: 20%;
+    margin-left: 10px;
+}
+
+.task-date {
+    font-size: 15px;
+}
+
+.item {
+    align-items: center;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.taskCheckbox {
+    margin-right: 10px;
+    flex: 0 0 auto;
+    transform: scale(1.2);
+    margin-bottom: 5px;
+}
+
+.task-detail {
+    flex: 1 1 auto; 
+    overflow: hidden;
+}
+
+.task-detail textarea {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+textarea {
+    resize: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.input-controller textarea {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #d1d1d1;
+    margin-bottom: 10px;
+}
+
+.input-controller input[type="date"] {
+    border: 1px solid #d1d1d1;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+}
+
+.edit-controller {
+    display: flex;
+    gap: 10px;
+}
+
+.update-controller {
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin-left: 20px;
+    display: none;
+    flex-direction: row;
+    gap: 10px;
+}
+
+button {
+    flex: 1;
+    margin: 0 5px;
+}
+
+button:first-child {
+    margin-left: 0;
+}
+
+button:last-child {
+    margin-right: 0;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#newTaskButton {
+    margin-top: 10px; 
+    margin-bottom: 20px; 
+    align-self: flex-start;
+}
+
+.editBtn, .saveBtn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.editBtn:hover, .saveBtn:hover {
+    background-color: #45a049;
+}
 
 .deleteBtn, .cancelBtn {
     background-color: #f44336;
@@ -8,16 +192,98 @@
     background-color: #da190b;
 }
 
-#task-form {
-    max-width: 600px;
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
     width: 100%;
-    margin: 20px auto;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
 }
 
-#task, #taskdate {
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+#taskModal .modal-content {
+    width: 500px;
+    max-width: 90%;
+}
+
+.colorOptions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.colorBtn.none {
+    background-color: #ccc;
+}
+
+.colorBtn.red {
+    background-color: red;
+}
+
+.colorBtn.yellow {
+    background-color: yellow;
+}
+
+.colorBtn.green {
+    background-color: green;
+}
+
+#cancelTask {
+    background-color: #ccc;
+}
+
+#submitTask {
+    background-color: #007BFF;
+    color: white;
+}
+
+.tabs {
+    display: flex;
     width: 100%;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.tab {
+    flex: 1;
+    margin: 0 5px;
     padding: 10px;
-    margin-bottom: 10px;
+    text-align: center;
+    background-color: #e1e1e1;
+    cursor: pointer;
     border-radius: 5px;
-    border: 1px solid #d1d1d1;
+}
+
+.tab:first-child {
+    margin-left: 0;
+}
+
+.tab:last-child {
+    margin-right: 0;
+}
+
+.tab.active {
+    background-color: #007BFF;
+    color: white;
+}
+
+#revertSelected {
+    display: none;
 }
